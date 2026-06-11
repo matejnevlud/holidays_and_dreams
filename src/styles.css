@@ -1,0 +1,290 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-display: "Playfair Display", ui-serif, Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-neon-pink: var(--neon-pink);
+  --color-neon-cyan: var(--neon-cyan);
+  --color-gold: var(--gold);
+  --color-cream: var(--cream);
+}
+
+:root {
+  --radius: 0.5rem;
+  /* Dark Miami palette */
+  --background: oklch(0.16 0.012 260);
+  --foreground: oklch(0.96 0.01 80);
+
+  --card: oklch(0.2 0.014 260);
+  --card-foreground: oklch(0.96 0.01 80);
+
+  --popover: oklch(0.2 0.014 260);
+  --popover-foreground: oklch(0.96 0.01 80);
+
+  --primary: oklch(0.96 0.01 80);
+  --primary-foreground: oklch(0.16 0.012 260);
+
+  --secondary: oklch(0.24 0.014 260);
+  --secondary-foreground: oklch(0.96 0.01 80);
+
+  --muted: oklch(0.24 0.014 260);
+  --muted-foreground: oklch(0.72 0.012 80);
+
+  --accent: oklch(0.28 0.02 260);
+  --accent-foreground: oklch(0.96 0.01 80);
+
+  --destructive: oklch(0.6 0.22 25);
+  --destructive-foreground: oklch(0.98 0.01 80);
+
+  --border: oklch(0.3 0.014 260 / 0.6);
+  --input: oklch(0.28 0.014 260);
+  --ring: oklch(0.75 0.15 340);
+
+  --neon-pink: oklch(0.78 0.18 340);
+  --neon-cyan: oklch(0.82 0.14 220);
+  --gold: oklch(0.82 0.1 85);
+  --cream: oklch(0.94 0.02 80);
+
+  --gradient-hero: linear-gradient(
+    180deg,
+    oklch(0.1 0.01 260 / 0.65) 0%,
+    oklch(0.1 0.01 260 / 0.45) 40%,
+    oklch(0.14 0.01 260 / 0.95) 100%
+  );
+  --gradient-neon: linear-gradient(135deg, var(--neon-pink), var(--neon-cyan));
+  --shadow-elegant: 0 30px 80px -20px oklch(0 0 0 / 0.6);
+  --shadow-glow: 0 0 60px oklch(0.78 0.18 340 / 0.25);
+  --transition-smooth: 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "ss01", "cv11";
+    overflow-x: hidden;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+@utility text-pretty {
+  text-wrap: pretty;
+}
+
+/* Fluid type scale — smooth across viewports instead of stepping at breakpoints. */
+@utility fluid-hero {
+  font-size: clamp(2.75rem, 1.6rem + 5.6vw, 5.25rem);
+}
+@utility fluid-h2 {
+  font-size: clamp(1.9rem, 1.2rem + 3.1vw, 3.25rem);
+}
+@utility fluid-price {
+  font-size: clamp(3.25rem, 2rem + 5.4vw, 5rem);
+}
+
+/* Premium film-grain texture — fixed, non-interactive, very subtle.
+   No mix-blend-mode: a fixed blended layer forces WebKit/Safari to recomposite
+   the whole stacking context whenever content beneath it animates, which shows
+   up as section-wide flicker. Plain low-opacity noise on its own GPU layer is
+   visually equivalent here and stays stable. */
+@utility grain {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Animated neon gradient text — slow shimmer sweep. */
+@utility text-shimmer {
+  background: linear-gradient(
+    100deg,
+    var(--neon-pink) 0%,
+    var(--neon-cyan) 35%,
+    var(--cream) 50%,
+    var(--neon-cyan) 65%,
+    var(--neon-pink) 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 6s linear infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: 200% center;
+  }
+}
+
+/* Slow Ken Burns zoom for hero imagery. */
+@keyframes ken-burns {
+  0% {
+    transform: scale(1.05) translate3d(0, 0, 0);
+  }
+  100% {
+    transform: scale(1.18) translate3d(-1.5%, -1.5%, 0);
+  }
+}
+@utility ken-burns {
+  animation: ken-burns 24s ease-in-out infinite alternate;
+}
+
+/* Neon border that lights up on hover. Implemented purely with box-shadow
+   (an inset 1px ring + soft outer glow) instead of a mask-composite pseudo —
+   mask-composite over an animated/transformed ancestor flickers badly in Safari.
+   An inset ring also avoids any layout shift since it doesn't occupy box space. */
+@utility card-glow {
+  position: relative;
+  transition:
+    box-shadow var(--transition-smooth),
+    border-color var(--transition-smooth);
+}
+@utility card-glow {
+  &:hover {
+    border-color: oklch(0.78 0.18 340 / 0.45);
+    box-shadow:
+      inset 0 0 0 1px oklch(0.82 0.16 320 / 0.55),
+      0 18px 50px -22px oklch(0.78 0.18 340 / 0.4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .text-shimmer {
+    animation: none;
+  }
+  .ken-burns {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@utility neon-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--neon-pink),
+    var(--neon-cyan),
+    transparent
+  );
+  opacity: 0.5;
+}
+
+@utility btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.95rem 1.75rem;
+  border-radius: 9999px;
+  background: var(--cream);
+  color: oklch(0.16 0.012 260);
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+  transition:
+    transform var(--transition-smooth),
+    box-shadow var(--transition-smooth),
+    background var(--transition-smooth);
+  box-shadow: 0 8px 30px -8px oklch(0.78 0.18 340 / 0.35);
+}
+@utility btn-primary {
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+  }
+}
+
+@utility btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1.1rem;
+  border-radius: 9999px;
+  border: 1px solid oklch(0.96 0.01 80 / 0.18);
+  color: var(--cream);
+  font-size: 0.9rem;
+  transition: all var(--transition-smooth);
+}
+@utility btn-ghost {
+  &:hover {
+    border-color: var(--neon-pink);
+    color: var(--neon-pink);
+  }
+}
+
+@utility eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--neon-cyan);
+  font-weight: 500;
+}

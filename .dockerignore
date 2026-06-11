@@ -1,0 +1,14 @@
+node_modules
+dist
+.output
+.nitro
+.tanstack
+.wrangler
+.git
+.claude
+.env
+.env.*
+.DS_Store
+*.log
+README.md
+CLAUDE.md
