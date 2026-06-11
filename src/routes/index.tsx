@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, type ReactNode } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { motion, useScroll, useTransform } from "motion/react";
 import {
@@ -7,14 +7,16 @@ import {
   Route as RouteIcon,
   CalendarDays,
   ShieldCheck,
+  ArrowUpRight,
+  Sparkle,
 } from "lucide-react";
 import heroOcean from "@/assets/hero-ocean.jpg";
 import brazilRio from "@/assets/brazil-rio.jpg";
 import brazilIguazu from "@/assets/brazil-iguazu.jpg";
 import brazilNoronha from "@/assets/brazil-noronha.jpg";
 import brazilSalvador from "@/assets/brazil-salvador.jpg";
-import logoAsset from "@/assets/logo.png.asset.json";
 import { ContactForm } from "@/components/ContactForm";
+import { Logo } from "@/components/Logo";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Reveal } from "@/components/motion/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
@@ -41,7 +43,7 @@ export const Route = createFileRoute("/")({
           "Dovolená navržená jako celek. Individuální plán cesty pro lidi, kteří chtějí cestovat lépe a bez stresu.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: logoAsset.url },
+      { property: "og:image", content: heroOcean },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: "/" }],
@@ -51,10 +53,12 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="relative min-h-screen text-foreground">
+      <div className="aurora" aria-hidden />
       <div className="grain" aria-hidden />
       <SiteHeader />
       <Hero />
+      <DestinationsMarquee />
       <NotAnAgency />
       <WhatYouGet />
       <HowItWorks />
@@ -162,6 +166,16 @@ function Hero() {
               Jak to funguje
             </motion.a>
           </motion.div>
+          <motion.p
+            variants={item}
+            className="mt-8 flex items-center gap-2.5 text-sm text-cream/60"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon-cyan opacity-60" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-neon-cyan" />
+            </span>
+            Přijímám nové poptávky na rok {new Date().getFullYear()}
+          </motion.p>
         </motion.div>
       </motion.div>
 
@@ -186,6 +200,49 @@ function Hero() {
 
       <div className="absolute inset-x-0 bottom-0 neon-divider" />
     </section>
+  );
+}
+
+/* ---------------- Destinations marquee ---------------- */
+const DESTINATIONS = [
+  "Rio de Janeiro",
+  "Fernando de Noronha",
+  "Tokio",
+  "Bali",
+  "Maledivy",
+  "Miami",
+  "Kapské Město",
+  "Amalfi",
+  "Patagonie",
+  "Santorini",
+];
+
+function DestinationsMarquee() {
+  return (
+    <div
+      aria-hidden
+      className="relative overflow-hidden border-b border-white/5 py-5"
+      style={{
+        maskImage:
+          "linear-gradient(90deg, transparent, black 12%, black 88%, transparent)",
+      }}
+    >
+      <div className="marquee-track">
+        {[0, 1].map((copy) => (
+          <div key={copy} className="flex items-center gap-14 pr-14">
+            {DESTINATIONS.map((d) => (
+              <span
+                key={d}
+                className="flex items-center gap-14 text-xs tracking-[0.35em] whitespace-nowrap text-cream/45 uppercase"
+              >
+                {d}
+                <Sparkle className="h-3 w-3 text-neon-cyan/50" />
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -285,11 +342,13 @@ function WhatYouGet() {
             as="li"
             className="md:px-10 md:first:pl-0 md:last:pr-0"
           >
-            <div className="flex items-center gap-3">
-              <group.icon
-                className="h-5 w-5 text-neon-cyan"
-                strokeWidth={1.5}
-              />
+            <div className="flex items-center gap-4">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full gradient-border">
+                <group.icon
+                  className="h-5 w-5 text-neon-cyan"
+                  strokeWidth={1.5}
+                />
+              </span>
               <h3 className="text-xs font-medium tracking-[0.2em] text-neon-cyan uppercase">
                 {group.label}
               </h3>
@@ -340,16 +399,14 @@ function HowItWorks() {
         each={0.1}
       >
         {steps.map((s, i) => (
-          <StaggerItem
-            key={s.t}
-            as="li"
-            className="card-glow group relative rounded-2xl border border-border bg-card/80 p-8 transition hover:-translate-y-1"
-          >
-            <span className="font-display text-5xl text-neon-cyan/60 transition group-hover:text-neon-cyan">
-              {String(i + 1).padStart(2, "0")}
-            </span>
-            <h3 className="mt-4 text-xl text-cream">{s.t}</h3>
-            <p className="mt-3 text-muted-foreground">{s.d}</p>
+          <StaggerItem key={s.t} as="li" className="h-full">
+            <SpotlightCard className="card-glow group relative h-full rounded-2xl border border-border bg-card/80 p-8 transition hover:-translate-y-1">
+              <span className="font-display text-5xl text-neon-cyan/60 transition group-hover:text-neon-cyan">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <h3 className="mt-4 text-xl text-cream">{s.t}</h3>
+              <p className="mt-3 text-muted-foreground">{s.d}</p>
+            </SpotlightCard>
           </StaggerItem>
         ))}
       </Stagger>
@@ -362,6 +419,28 @@ function HowItWorks() {
         osobně.
       </Reveal>
     </Section>
+  );
+}
+
+/** Card wrapper that feeds the pointer position to the .card-spotlight halo. */
+function SpotlightCard({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      onMouseMove={(e) => {
+        const r = e.currentTarget.getBoundingClientRect();
+        e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`);
+        e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
+      }}
+      className={`card-spotlight ${className}`}
+    >
+      {children}
+    </div>
   );
 }
 
@@ -384,7 +463,7 @@ function Pricing() {
 
           <Reveal delay={0.1}>
             <div
-              className="relative mx-auto mt-10 inline-block rounded-3xl border border-border bg-background/70 px-12 py-10 backdrop-blur"
+              className="relative mx-auto mt-10 inline-block rounded-3xl gradient-border px-12 py-10 backdrop-blur"
               style={{ boxShadow: "var(--shadow-elegant)" }}
             >
               <motion.div
@@ -487,21 +566,25 @@ function Showcase() {
           <ShowcaseImage
             src={brazilRio}
             alt="Rio de Janeiro"
+            tag="Ikonické město"
             className="col-span-2 aspect-[16/10]"
           />
           <ShowcaseImage
             src={brazilIguazu}
             alt="Vodopády Iguazú"
+            tag="Příroda"
             className="aspect-square"
           />
           <ShowcaseImage
             src={brazilNoronha}
             alt="Fernando de Noronha"
+            tag="Tropický ostrov"
             className="aspect-square"
           />
           <ShowcaseImage
             src={brazilSalvador}
-            alt="Salvador, Bahia"
+            alt="Salvador de Bahia"
+            tag="Kultura"
             className="col-span-2 aspect-[16/9]"
           />
         </Stagger>
@@ -513,22 +596,35 @@ function Showcase() {
 function ShowcaseImage({
   src,
   alt,
+  tag,
   className,
 }: {
   src: string;
   alt: string;
+  tag: string;
   className: string;
 }) {
   return (
-    <StaggerItem as="figure" className="group overflow-hidden rounded-2xl">
+    <StaggerItem
+      as="figure"
+      className={`group relative overflow-hidden rounded-2xl ${className}`}
+    >
       <img
         src={src}
         alt={alt}
         loading="lazy"
         width={1280}
         height={1280}
-        className={`w-full object-cover transition duration-700 ease-out group-hover:scale-105 ${className}`}
+        className="img-reveal h-full w-full object-cover transition duration-700 ease-out group-hover:scale-105"
       />
+      <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 bg-gradient-to-t from-black/75 via-black/25 to-transparent p-5 pt-14">
+        <span className="font-display text-lg leading-tight text-cream">
+          {alt}
+        </span>
+        <span className="mb-1 text-[0.6rem] tracking-[0.25em] whitespace-nowrap text-cream/70 uppercase">
+          {tag}
+        </span>
+      </figcaption>
     </StaggerItem>
   );
 }
@@ -597,11 +693,9 @@ function About() {
               animate={{ opacity: [0.3, 0.5, 0.3], scale: [1, 1.05, 1] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
             />
-            <img
-              src={logoAsset.url}
-              alt="Holidays and Dreams logo"
-              className="relative h-48 w-48 rounded-full object-cover ring-1 ring-white/10"
-            />
+            <div className="relative flex h-48 w-48 items-center justify-center rounded-full border border-white/10 bg-card/50 backdrop-blur">
+              <Logo className="h-28 w-28" />
+            </div>
           </div>
         </Reveal>
       </div>
@@ -617,16 +711,51 @@ function Contact() {
       eyebrow="Kontakt"
       title="Chcete navrhnout dovolenou na míru?"
     >
-      <Reveal as="p" className="max-w-2xl text-lg text-muted-foreground">
-        Pošlete mi základní informace a ozvu se vám s dalším postupem.
-      </Reveal>
-      <Reveal
-        delay={0.1}
-        className="mt-12 rounded-3xl border border-border bg-card/40 p-6 backdrop-blur md:p-10"
-        style={{ boxShadow: "var(--shadow-elegant)" }}
-      >
-        <ContactForm />
-      </Reveal>
+      <div className="grid gap-12 lg:grid-cols-5">
+        <div className="lg:col-span-2">
+          <Reveal as="p" className="max-w-md text-lg text-muted-foreground">
+            Pošlete mi základní informace a ozvu se vám s dalším postupem.
+            Poptávka je nezávazná.
+          </Reveal>
+          <Reveal delay={0.05}>
+            <a
+              href="mailto:info@holidayanddreams.cz"
+              className="group mt-8 inline-flex items-center gap-2 font-display text-xl text-cream transition hover:text-neon-cyan md:text-2xl"
+            >
+              info@holidayanddreams.cz
+              <ArrowUpRight className="h-5 w-5 text-neon-cyan transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </a>
+          </Reveal>
+          <Stagger as="ul" delay={0.1} className="mt-10 space-y-3">
+            {[
+              "Odpovídám zpravidla do 24 hodin",
+              "Konzultace online i osobně",
+              "Návrh na míru, žádný katalog",
+            ].map((t) => (
+              <StaggerItem
+                key={t}
+                as="li"
+                className="flex items-center gap-3 text-cream/80"
+              >
+                <Check
+                  className="h-4 w-4 shrink-0 text-neon-pink"
+                  strokeWidth={2.5}
+                />
+                {t}
+              </StaggerItem>
+            ))}
+          </Stagger>
+        </div>
+
+        <Reveal
+          delay={0.1}
+          from="right"
+          className="rounded-3xl border border-border bg-card/40 p-6 backdrop-blur lg:col-span-3 md:p-10"
+          style={{ boxShadow: "var(--shadow-elegant)" }}
+        >
+          <ContactForm />
+        </Reveal>
+      </div>
     </Section>
   );
 }
@@ -634,21 +763,50 @@ function Contact() {
 /* ---------------- Footer ---------------- */
 function SiteFooter() {
   return (
-    <footer className="border-t border-white/5 bg-background">
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-10 sm:flex-row">
-        <div className="flex items-center gap-3">
-          <img
-            src={logoAsset.url}
-            alt=""
-            className="h-8 w-8 rounded-full object-cover"
-          />
-          <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Holidays and Dreams
+    <footer className="relative overflow-hidden border-t border-white/5">
+      <div className="absolute inset-x-0 top-0 neon-divider" aria-hidden />
+      <div className="mx-auto max-w-6xl px-6 py-16">
+        <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
+          <div>
+            <Logo className="h-12 w-12" />
+            <p className="mt-6 font-display text-3xl text-cream">
+              Holidays <em className="text-shimmer not-italic">&amp;</em> Dreams
+            </p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Travel architekt — návrh dovolené na míru
+            </p>
+          </div>
+          <div className="flex flex-col gap-3 text-sm md:items-end">
+            <nav className="flex flex-wrap gap-x-6 gap-y-2 text-muted-foreground">
+              {[
+                { href: "#sluzba", label: "Služba" },
+                { href: "#jak-to-funguje", label: "Jak to funguje" },
+                { href: "#cena", label: "Cena" },
+                { href: "#kontakt", label: "Kontakt" },
+              ].map((l) => (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  className="transition hover:text-cream"
+                >
+                  {l.label}
+                </a>
+              ))}
+            </nav>
+            <a
+              href="mailto:info@holidayanddreams.cz"
+              className="text-cream/80 transition hover:text-neon-cyan"
+            >
+              info@holidayanddreams.cz
+            </a>
+          </div>
+        </div>
+        <div className="mt-14 flex flex-col items-center justify-between gap-3 border-t border-white/5 pt-6 text-xs text-muted-foreground sm:flex-row">
+          <p>© {new Date().getFullYear()} Holidays and Dreams</p>
+          <p className="tracking-[0.2em] uppercase">
+            Navrženo s láskou k cestování
           </p>
         </div>
-        <p className="text-xs tracking-widest text-muted-foreground uppercase">
-          Travel architekt — návrh dovolené na míru
-        </p>
       </div>
     </footer>
   );

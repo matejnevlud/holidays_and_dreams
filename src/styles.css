@@ -96,6 +96,16 @@
   }
   html {
     scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: oklch(0.32 0.014 260) transparent;
+  }
+  ::selection {
+    background: oklch(0.78 0.18 340 / 0.35);
+    color: var(--cream);
+  }
+  :focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 2px;
   }
   body {
     background-color: var(--color-background);
@@ -204,6 +214,139 @@
   }
 }
 
+/* Aurora backdrop — two slow-drifting neon glows behind all content.
+   Transform-only animation on pre-blurred radial gradients (no filter), so it
+   stays on its own GPU layer and avoids the Safari recomposite flicker. */
+@keyframes aurora-a {
+  0%,
+  100% {
+    transform: translate3d(-8%, -4%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(10%, 8%, 0) scale(1.18);
+  }
+}
+@keyframes aurora-b {
+  0%,
+  100% {
+    transform: translate3d(6%, 4%, 0) scale(1.1);
+  }
+  50% {
+    transform: translate3d(-10%, -8%, 0) scale(1);
+  }
+}
+@utility aurora {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    width: 60vmax;
+    height: 60vmax;
+    border-radius: 9999px;
+    will-change: transform;
+  }
+  &::before {
+    top: -22%;
+    left: -14%;
+    background: radial-gradient(
+      circle,
+      oklch(0.78 0.18 340 / 0.09),
+      transparent 65%
+    );
+    animation: aurora-a 28s ease-in-out infinite;
+  }
+  &::after {
+    bottom: -26%;
+    right: -16%;
+    background: radial-gradient(
+      circle,
+      oklch(0.82 0.14 220 / 0.08),
+      transparent 65%
+    );
+    animation: aurora-b 34s ease-in-out infinite;
+  }
+}
+
+/* Infinite destination marquee — track holds two copies of the content and
+   slides by exactly half its own width for a seamless loop. */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@utility marquee-track {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  /* No gap here — each copy carries its own trailing padding so the -50%
+     translate lands exactly on the second copy (seamless loop). */
+  animation: marquee 44s linear infinite;
+}
+
+/* Cursor spotlight — soft cyan halo that follows the pointer inside a card.
+   Position is fed via --mx/--my custom props from a mousemove handler. */
+@utility card-spotlight {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 500ms ease;
+    background: radial-gradient(
+      280px circle at var(--mx, 50%) var(--my, 50%),
+      oklch(0.82 0.14 220 / 0.08),
+      transparent 70%
+    );
+  }
+  &:hover::before {
+    opacity: 1;
+  }
+}
+
+/* 1px neon gradient border via two-layer background (padding-box fill +
+   border-box gradient) — crisper than a blurred glow for premium cards. */
+@utility gradient-border {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(oklch(0.19 0.013 260 / 0.92), oklch(0.19 0.013 260 / 0.92))
+      padding-box,
+    linear-gradient(
+        135deg,
+        oklch(0.78 0.18 340 / 0.65),
+        oklch(0.82 0.14 220 / 0.65)
+      )
+      border-box;
+}
+
+/* Scroll-driven image reveal (CSS animation-timeline) — progressive
+   enhancement, ignored by browsers without support. Animates clip-path only,
+   so it can't fight the transform/scale hover zoom or motion's opacity. */
+@keyframes img-unclip {
+  from {
+    clip-path: inset(14% 7% 14% 7%);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .img-reveal {
+      animation: img-unclip ease-out both;
+      animation-timeline: view();
+      animation-range: entry 5% entry 50%;
+    }
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -254,9 +397,29 @@
   box-shadow: 0 8px 30px -8px oklch(0.78 0.18 340 / 0.35);
 }
 @utility btn-primary {
+  position: relative;
+  overflow: hidden;
+  /* Light sheen that sweeps across on hover. */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 45%;
+    transform: translateX(-160%) skewX(-20deg);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      oklch(1 0 0 / 0.5),
+      transparent
+    );
+    transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
   &:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-glow);
+  }
+  &:hover::after {
+    transform: translateX(320%) skewX(-20deg);
   }
 }
 

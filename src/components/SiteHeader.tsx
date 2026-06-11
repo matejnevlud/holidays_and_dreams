@@ -4,9 +4,10 @@ import {
   motion,
   useMotionValueEvent,
   useScroll,
+  useSpring,
 } from "motion/react";
 import { Menu, X } from "lucide-react";
-import logoAsset from "@/assets/logo.png.asset.json";
+import { Logo } from "@/components/Logo";
 import { useScrollSpy } from "@/hooks/use-scroll-spy";
 
 const NAV = [
@@ -16,6 +17,23 @@ const NAV = [
   { href: "ukazka", label: "Ukázka" },
   { href: "o-mne", label: "O mně" },
 ];
+
+/** Thin neon line along the top edge showing reading progress. */
+function ScrollProgress() {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 140,
+    damping: 30,
+    restDelta: 0.001,
+  });
+  return (
+    <motion.div
+      aria-hidden
+      className="fixed inset-x-0 top-0 z-50 h-[2px] origin-left"
+      style={{ scaleX, background: "var(--gradient-neon)" }}
+    />
+  );
+}
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
@@ -29,35 +47,30 @@ export function SiteHeader() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-40">
-      <motion.div
-        initial={false}
-        animate={{
-          backgroundColor: scrolled
-            ? "oklch(0.16 0.012 260 / 0.72)"
-            : "oklch(0.16 0.012 260 / 0)",
-          backdropFilter: scrolled ? "blur(12px)" : "blur(0px)",
-          WebkitBackdropFilter: scrolled ? "blur(12px)" : "blur(0px)",
-          borderColor: scrolled
-            ? "oklch(0.96 0.01 80 / 0.06)"
-            : "oklch(0.96 0.01 80 / 0)",
-        }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        className="border-b"
-        // Pin the blurred bar to its own GPU layer. Without this, Safari
-        // re-tears the backdrop every frame as high-contrast content (the grid
-        // tiles / step cards) scrolls underneath, which reads as flicker.
-        style={{ transform: "translateZ(0)", willChange: "backdrop-filter" }}
-      >
-        <div
-          className="mx-auto flex max-w-6xl items-center justify-between px-6 transition-[padding] duration-500"
-          style={{ paddingBlock: scrolled ? "0.7rem" : "1rem" }}
+      <ScrollProgress />
+      <div className="px-4 pt-4">
+        <motion.div
+          initial={false}
+          animate={{
+            backgroundColor: scrolled
+              ? "oklch(0.16 0.012 260 / 0.72)"
+              : "oklch(0.16 0.012 260 / 0.28)",
+            borderColor: scrolled
+              ? "oklch(0.96 0.01 80 / 0.1)"
+              : "oklch(0.96 0.01 80 / 0.05)",
+            boxShadow: scrolled
+              ? "0 16px 40px -20px oklch(0 0 0 / 0.7)"
+              : "0 0 0 0 oklch(0 0 0 / 0)",
+          }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          className="mx-auto flex max-w-5xl items-center justify-between rounded-full border px-4 py-2.5 backdrop-blur-xl sm:px-5"
+          // Pin the blurred bar to its own GPU layer. Without this, Safari
+          // re-tears the backdrop every frame as high-contrast content (the grid
+          // tiles / step cards) scrolls underneath, which reads as flicker.
+          style={{ transform: "translateZ(0)", willChange: "backdrop-filter" }}
         >
           <a href="#top" className="flex items-center gap-3">
-            <img
-              src={logoAsset.url}
-              alt="Holidays and Dreams"
-              className="h-10 w-10 rounded-full object-cover ring-1 ring-white/10"
-            />
+            <Logo className="h-9 w-9" />
             <span className="hidden text-sm tracking-[0.18em] text-cream/80 sm:inline">
               HOLIDAYS &amp; DREAMS
             </span>
@@ -98,8 +111,8 @@ export function SiteHeader() {
               <Menu className="h-5 w-5" />
             </button>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
 
       <MobileMenu open={open} onClose={() => setOpen(false)} active={active} />
     </header>
@@ -126,7 +139,8 @@ function MobileMenu({
           className="fixed inset-0 z-50 flex flex-col bg-background/95 backdrop-blur-xl md:hidden"
         >
           <div className="flex items-center justify-between px-6 py-4">
-            <span className="text-sm tracking-[0.18em] text-cream/80">
+            <span className="flex items-center gap-3 text-sm tracking-[0.18em] text-cream/80">
+              <Logo className="h-8 w-8" />
               HOLIDAYS &amp; DREAMS
             </span>
             <button
