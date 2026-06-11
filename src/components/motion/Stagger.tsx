@@ -52,7 +52,7 @@ export function Stagger({
       className={className}
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, margin: "-8%" }}
+      viewport={{ once: true, margin: "-8% 0px" }}
       variants={{
         hidden: {},
         show: { transition: { staggerChildren: each, delayChildren: delay } },

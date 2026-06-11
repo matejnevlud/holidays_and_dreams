@@ -70,7 +70,7 @@ export function SiteHeader() {
           style={{ transform: "translateZ(0)", willChange: "backdrop-filter" }}
         >
           <a href="#top" className="flex items-center gap-3">
-            <Logo className="h-9 w-9" />
+            <Logo className="h-10 w-10 rounded-full object-cover ring-1 ring-white/10" />
             <span className="hidden text-sm tracking-[0.18em] text-cream/80 sm:inline">
               HOLIDAYS &amp; DREAMS
             </span>
@@ -140,7 +140,7 @@ function MobileMenu({
         >
           <div className="flex items-center justify-between px-6 py-4">
             <span className="flex items-center gap-3 text-sm tracking-[0.18em] text-cream/80">
-              <Logo className="h-8 w-8" />
+              <Logo className="h-8 w-8 rounded-full object-cover ring-1 ring-white/10" />
               HOLIDAYS &amp; DREAMS
             </span>
             <button

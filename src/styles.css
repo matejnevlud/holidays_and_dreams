@@ -158,28 +158,19 @@
   will-change: transform;
 }
 
-/* Animated neon gradient text — slow shimmer sweep. */
-@utility text-shimmer {
+/* Static neon gradient text — the logo's pink→cyan as a quiet accent.
+   Deliberately not animated: the client brief asks for calm, no flashing
+   neon effects. */
+@utility text-neon {
   background: linear-gradient(
     100deg,
     var(--neon-pink) 0%,
-    var(--neon-cyan) 35%,
-    var(--cream) 50%,
-    var(--neon-cyan) 65%,
-    var(--neon-pink) 100%
+    var(--neon-cyan) 100%
   );
-  background-size: 200% auto;
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  animation: shimmer 6s linear infinite;
-}
-
-@keyframes shimmer {
-  to {
-    background-position: 200% center;
-  }
 }
 
 /* Slow Ken Burns zoom for hero imagery. */
@@ -272,22 +263,6 @@
   }
 }
 
-/* Infinite destination marquee — track holds two copies of the content and
-   slides by exactly half its own width for a seamless loop. */
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
-}
-@utility marquee-track {
-  display: flex;
-  width: max-content;
-  align-items: center;
-  /* No gap here — each copy carries its own trailing padding so the -50%
-     translate lands exactly on the second copy (seamless loop). */
-  animation: marquee 44s linear infinite;
-}
-
 /* Cursor spotlight — soft cyan halo that follows the pointer inside a card.
    Position is fed via --mx/--my custom props from a mousemove handler. */
 @utility card-spotlight {
@@ -350,9 +325,6 @@
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
-  }
-  .text-shimmer {
-    animation: none;
   }
   .ken-burns {
     animation: none;

@@ -17,7 +17,9 @@ export function useCountUp(
   { duration = 1.6, format }: Options = {},
 ) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-15%" });
+  // Vertical-only inset: a plain "-15%" would also inset horizontally and
+  // permanently exclude elements near the left/right viewport edge.
+  const inView = useInView(ref, { once: true, margin: "-15% 0px" });
   const reduce = useReducedMotion();
   const [value, setValue] = useState(0);
 

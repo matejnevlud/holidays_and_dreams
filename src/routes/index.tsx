@@ -8,7 +8,6 @@ import {
   CalendarDays,
   ShieldCheck,
   ArrowUpRight,
-  Sparkle,
 } from "lucide-react";
 import heroOcean from "@/assets/hero-ocean.jpg";
 import brazilRio from "@/assets/brazil-rio.jpg";
@@ -58,7 +57,6 @@ function Index() {
       <div className="grain" aria-hidden />
       <SiteHeader />
       <Hero />
-      <DestinationsMarquee />
       <NotAnAgency />
       <WhatYouGet />
       <HowItWorks />
@@ -131,7 +129,7 @@ function Hero() {
             className="mt-6 text-balance fluid-hero font-display leading-[1.05] text-cream"
           >
             Dovolená navržená{" "}
-            <em className="text-shimmer not-italic">jako celek</em>
+            <em className="text-neon not-italic">jako celek</em>
           </motion.h1>
           <motion.p
             variants={item}
@@ -170,10 +168,10 @@ function Hero() {
             variants={item}
             className="mt-8 flex items-center gap-2.5 text-sm text-cream/60"
           >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon-cyan opacity-60" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-neon-cyan" />
-            </span>
+            <span
+              className="inline-flex h-2 w-2 rounded-full bg-neon-cyan"
+              style={{ boxShadow: "0 0 10px oklch(0.82 0.14 220 / 0.7)" }}
+            />
             Přijímám nové poptávky na rok {new Date().getFullYear()}
           </motion.p>
         </motion.div>
@@ -200,49 +198,6 @@ function Hero() {
 
       <div className="absolute inset-x-0 bottom-0 neon-divider" />
     </section>
-  );
-}
-
-/* ---------------- Destinations marquee ---------------- */
-const DESTINATIONS = [
-  "Rio de Janeiro",
-  "Fernando de Noronha",
-  "Tokio",
-  "Bali",
-  "Maledivy",
-  "Miami",
-  "Kapské Město",
-  "Amalfi",
-  "Patagonie",
-  "Santorini",
-];
-
-function DestinationsMarquee() {
-  return (
-    <div
-      aria-hidden
-      className="relative overflow-hidden border-b border-white/5 py-5"
-      style={{
-        maskImage:
-          "linear-gradient(90deg, transparent, black 12%, black 88%, transparent)",
-      }}
-    >
-      <div className="marquee-track">
-        {[0, 1].map((copy) => (
-          <div key={copy} className="flex items-center gap-14 pr-14">
-            {DESTINATIONS.map((d) => (
-              <span
-                key={d}
-                className="flex items-center gap-14 text-xs tracking-[0.35em] whitespace-nowrap text-cream/45 uppercase"
-              >
-                {d}
-                <Sparkle className="h-3 w-3 text-neon-cyan/50" />
-              </span>
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
   );
 }
 
@@ -466,22 +421,16 @@ function Pricing() {
               className="relative mx-auto mt-10 inline-block rounded-3xl gradient-border px-12 py-10 backdrop-blur"
               style={{ boxShadow: "var(--shadow-elegant)" }}
             >
-              <motion.div
-                className="absolute -inset-px rounded-3xl blur-lg"
+              <div
+                className="absolute -inset-px rounded-3xl opacity-30 blur-lg"
                 style={{ background: "var(--gradient-neon)" }}
                 aria-hidden
-                animate={{ opacity: [0.2, 0.4, 0.2] }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
               />
               <div className="relative">
                 <p className="fluid-price font-display text-cream">
                   <span ref={ref}>{display}</span> Kč
                 </p>
-                <p className="mt-3 text-sm tracking-widest text-neon-pink/90 uppercase">
+                <p className="mt-3 text-sm tracking-widest text-gold/90 uppercase">
                   Jednorázová cena
                 </p>
               </div>
@@ -684,18 +633,14 @@ function About() {
           </Stagger>
         </div>
 
-        <Reveal from="right" className="flex items-start md:justify-end">
+        <Reveal from="right" className="flex items-center md:justify-end">
           <div className="relative">
-            <motion.div
-              className="absolute -inset-3 rounded-full blur-2xl"
+            <div
+              className="absolute inset-6 rounded-full opacity-25 blur-3xl"
               style={{ background: "var(--gradient-neon)" }}
               aria-hidden
-              animate={{ opacity: [0.3, 0.5, 0.3], scale: [1, 1.05, 1] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
             />
-            <div className="relative flex h-48 w-48 items-center justify-center rounded-full border border-white/10 bg-card/50 backdrop-blur">
-              <Logo className="h-28 w-28" />
-            </div>
+            <Logo className="relative h-56 w-56 md:h-64 md:w-64" />
           </div>
         </Reveal>
       </div>
@@ -768,11 +713,8 @@ function SiteFooter() {
       <div className="mx-auto max-w-6xl px-6 py-16">
         <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
           <div>
-            <Logo className="h-12 w-12" />
-            <p className="mt-6 font-display text-3xl text-cream">
-              Holidays <em className="text-shimmer not-italic">&amp;</em> Dreams
-            </p>
-            <p className="mt-2 text-sm text-muted-foreground">
+            <Logo className="h-32 w-32" />
+            <p className="mt-4 text-sm text-muted-foreground">
               Travel architekt — návrh dovolené na míru
             </p>
           </div>
