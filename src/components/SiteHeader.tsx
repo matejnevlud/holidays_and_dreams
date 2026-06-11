@@ -30,7 +30,7 @@ function ScrollProgress() {
     <motion.div
       aria-hidden
       className="fixed inset-x-0 top-0 z-50 h-[2px] origin-left"
-      style={{ scaleX, background: "var(--gradient-neon)" }}
+      style={{ scaleX, background: "var(--gradient-gold)" }}
     />
   );
 }
@@ -90,7 +90,7 @@ export function SiteHeader() {
                   {item.label}
                 </span>
                 <span
-                  className="absolute -bottom-0.5 left-0 h-px bg-gradient-to-r from-neon-pink to-neon-cyan transition-all duration-300 group-hover:w-full"
+                  className="absolute -bottom-0.5 left-0 h-px bg-gradient-to-r from-gold to-gold-deep transition-all duration-300 group-hover:w-full"
                   style={{ width: active === item.href ? "100%" : "0%" }}
                 />
               </a>
@@ -106,7 +106,7 @@ export function SiteHeader() {
               aria-label="Otevřít menu"
               aria-expanded={open}
               onClick={() => setOpen(true)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-cream transition hover:border-neon-pink hover:text-neon-pink md:hidden"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-cream transition hover:border-gold hover:text-gold md:hidden"
             >
               <Menu className="h-5 w-5" />
             </button>
@@ -147,7 +147,7 @@ function MobileMenu({
               type="button"
               aria-label="Zavřít menu"
               onClick={onClose}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-cream transition hover:border-neon-pink hover:text-neon-pink"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-cream transition hover:border-gold hover:text-gold"
             >
               <X className="h-5 w-5" />
             </button>
@@ -177,7 +177,7 @@ function MobileMenu({
                     transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
                   },
                 }}
-                className="font-display text-3xl text-cream/90 transition hover:text-neon-pink"
+                className="font-display text-3xl text-cream/90 transition hover:text-gold"
                 data-active={active === item.href}
               >
                 {item.label}

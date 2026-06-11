@@ -63,7 +63,7 @@ const FIELDS = [
 ] as const;
 
 const inputCls =
-  "w-full rounded-lg border border-border bg-input/40 px-4 py-3 text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-neon-pink focus:bg-input/80 focus:ring-2 focus:ring-neon-pink/20";
+  "w-full rounded-lg border border-border bg-input/40 px-4 py-3 text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-gold focus:bg-input/80 focus:ring-2 focus:ring-gold/20";
 
 export function ContactForm() {
   const [sent, setSent] = useState(false);
@@ -98,7 +98,7 @@ export function ContactForm() {
           className="rounded-2xl border border-border bg-card/60 p-10 text-center backdrop-blur"
         >
           <motion.span
-            className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-neon-pink to-neon-cyan text-background"
+            className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-gold to-gold-deep text-background"
             initial={{ scale: 0, rotate: -30 }}
             animate={{ scale: 1, rotate: 0 }}
             transition={{

@@ -121,7 +121,7 @@ function Hero() {
           animate="show"
         >
           <motion.span variants={item} className="eyebrow">
-            <span className="inline-block h-px w-8 bg-neon-cyan" />
+            <span className="inline-block h-px w-8 bg-gold/70" />
             Travel architekt
           </motion.span>
           <motion.h1
@@ -129,7 +129,7 @@ function Hero() {
             className="mt-6 text-balance fluid-hero font-display leading-[1.05] text-cream"
           >
             Dovolená navržená{" "}
-            <em className="text-neon not-italic">jako celek</em>
+            <em className="text-gilded not-italic">jako celek</em>
           </motion.h1>
           <motion.p
             variants={item}
@@ -169,8 +169,8 @@ function Hero() {
             className="mt-8 flex items-center gap-2.5 text-sm text-cream/60"
           >
             <span
-              className="inline-flex h-2 w-2 rounded-full bg-neon-cyan"
-              style={{ boxShadow: "0 0 10px oklch(0.82 0.14 220 / 0.7)" }}
+              className="inline-flex h-2 w-2 rounded-full bg-gold"
+              style={{ boxShadow: "0 0 10px oklch(0.84 0.09 88 / 0.7)" }}
             />
             Přijímám nové poptávky na rok {new Date().getFullYear()}
           </motion.p>
@@ -223,7 +223,7 @@ function Section({
       <Reveal>
         {eyebrow && (
           <span className="eyebrow">
-            <span className="inline-block h-px w-8 bg-neon-cyan" />
+            <span className="inline-block h-px w-8 bg-gold/70" />
             {eyebrow}
           </span>
         )}
@@ -299,12 +299,9 @@ function WhatYouGet() {
           >
             <div className="flex items-center gap-4">
               <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full gradient-border">
-                <group.icon
-                  className="h-5 w-5 text-neon-cyan"
-                  strokeWidth={1.5}
-                />
+                <group.icon className="h-5 w-5 text-gold" strokeWidth={1.5} />
               </span>
-              <h3 className="text-xs font-medium tracking-[0.2em] text-neon-cyan uppercase">
+              <h3 className="text-xs font-medium tracking-[0.2em] text-gold uppercase">
                 {group.label}
               </h3>
             </div>
@@ -312,7 +309,7 @@ function WhatYouGet() {
               {group.items.map((item) => (
                 <li key={item} className="flex items-start gap-3">
                   <Check
-                    className="mt-1 h-4 w-4 shrink-0 text-neon-pink"
+                    className="mt-1 h-4 w-4 shrink-0 text-gold"
                     strokeWidth={2.5}
                   />
                   <span className="text-cream/90">{item}</span>
@@ -356,7 +353,7 @@ function HowItWorks() {
         {steps.map((s, i) => (
           <StaggerItem key={s.t} as="li" className="h-full">
             <SpotlightCard className="card-glow group relative h-full rounded-2xl border border-border bg-card/80 p-8 transition hover:-translate-y-1">
-              <span className="font-display text-5xl text-neon-cyan/60 transition group-hover:text-neon-cyan">
+              <span className="font-display text-5xl text-gold/60 transition group-hover:text-gold">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <h3 className="mt-4 text-xl text-cream">{s.t}</h3>
@@ -408,7 +405,7 @@ function Pricing() {
         <div className="mx-auto max-w-2xl text-center">
           <Reveal>
             <span className="eyebrow justify-center">
-              <span className="inline-block h-px w-8 bg-neon-cyan" />
+              <span className="inline-block h-px w-8 bg-gold/70" />
               Cena
             </span>
             <h2 className="mt-5 fluid-h2 font-display text-cream">
@@ -422,8 +419,8 @@ function Pricing() {
               style={{ boxShadow: "var(--shadow-elegant)" }}
             >
               <div
-                className="absolute -inset-px rounded-3xl opacity-30 blur-lg"
-                style={{ background: "var(--gradient-neon)" }}
+                className="absolute -inset-px rounded-3xl opacity-25 blur-lg"
+                style={{ background: "var(--gradient-gold)" }}
                 aria-hidden
               />
               <div className="relative">
@@ -480,7 +477,7 @@ function Showcase() {
           <Reveal
             as="p"
             delay={0.05}
-            className="mt-5 font-display text-xl text-neon-cyan"
+            className="mt-5 font-display text-xl text-gold"
           >
             Rio de Janeiro → Iguazú → Salvador → Fortaleza → Fernando de Noronha
           </Reveal>
@@ -496,7 +493,7 @@ function Showcase() {
           <Stagger as="ul" className="mt-8 space-y-3">
             {bullets.map((b) => (
               <StaggerItem key={b} as="li" className="flex gap-3 text-cream/85">
-                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-neon-pink" />
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
                 {b}
               </StaggerItem>
             ))}
@@ -588,7 +585,7 @@ function About() {
         <div className="md:col-span-2">
           <Reveal>
             <span className="eyebrow">
-              <span className="inline-block h-px w-8 bg-neon-cyan" />
+              <span className="inline-block h-px w-8 bg-gold/70" />
               Kdo za tím stojí
             </span>
             <h2 className="mt-5 fluid-h2 font-display text-cream">
@@ -665,10 +662,10 @@ function Contact() {
           <Reveal delay={0.05}>
             <a
               href="mailto:info@holidayanddreams.cz"
-              className="group mt-8 inline-flex items-center gap-2 font-display text-xl text-cream transition hover:text-neon-cyan md:text-2xl"
+              className="group mt-8 inline-flex items-center gap-2 font-display text-xl text-cream transition hover:text-gold md:text-2xl"
             >
               info@holidayanddreams.cz
-              <ArrowUpRight className="h-5 w-5 text-neon-cyan transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ArrowUpRight className="h-5 w-5 text-gold transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
           </Reveal>
           <Stagger as="ul" delay={0.1} className="mt-10 space-y-3">
@@ -683,7 +680,7 @@ function Contact() {
                 className="flex items-center gap-3 text-cream/80"
               >
                 <Check
-                  className="h-4 w-4 shrink-0 text-neon-pink"
+                  className="h-4 w-4 shrink-0 text-gold"
                   strokeWidth={2.5}
                 />
                 {t}
@@ -737,7 +734,7 @@ function SiteFooter() {
             </nav>
             <a
               href="mailto:info@holidayanddreams.cz"
-              className="text-cream/80 transition hover:text-neon-cyan"
+              className="text-cream/80 transition hover:text-gold"
             >
               info@holidayanddreams.cz
             </a>
